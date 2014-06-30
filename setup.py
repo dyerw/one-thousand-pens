@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-setup(name='tbd',
+setup(name='One Thousand Pens',
       version='0.001',
       description='communal storytelling site',
       author='Some dudes',
@@ -12,6 +12,5 @@ setup(name='tbd',
           'flask-sqlalchemy',
           'flask-restful',
           'flask-socketio'
-      ],
-      test_suite='tests'
+      ]
      )
