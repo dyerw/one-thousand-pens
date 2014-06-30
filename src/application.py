@@ -1,3 +1,6 @@
+import thread
+import time
+import Queue
 # This is some copy-pasta from the internet
 # because the threading module was throwing errors
 from gevent import monkey
@@ -12,8 +15,20 @@ socketio = SocketIO(app)
 
 # Votes is a global var that keeps track of all the words
 # and their current votes
+vote_queue = Queue.Queue()
 votes = {}
 
+def update_votes():
+    """
+    
+    """
+    while True:
+        word = vote_queue.get(True)
+        print word
+        if word in votes:
+            votes[word] += 1
+        else:
+            votes[word] = 1
 
 @app.route('/')
 def index():
@@ -32,17 +47,12 @@ def add_vote(message):
     not.
     """
     word = message['word']
-    print word 
 
-    # TODO: this is not currently thread safe
-    if word in votes:
-        votes[word] += 1
-    else:
-        votes[word] = 1
-
+    vote_queue.put(word)
 
 def get_top_ten_words():
     pass
 
 if __name__ == '__main__':
+    thread.start_new_thread(update_votes)
     socketio.run(app)
