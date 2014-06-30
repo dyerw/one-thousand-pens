@@ -32,8 +32,9 @@ def add_vote(message):
     not.
     """
     word = message['word']
-    print word    
+    print word 
 
+    # TODO: this is not currently thread safe
     if word in votes:
         votes[word] += 1
     else:
