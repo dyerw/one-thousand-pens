@@ -1,3 +1,8 @@
+# This is some copy-pasta from the internet
+# because the threading module was throwing errors
+from gevent import monkey
+monkey.patch_all()
+
 from flask import Flask
 from flask.ext.socketio import SocketIO, emit
 
@@ -27,6 +32,7 @@ def add_vote(message):
     not.
     """
     word = message['word']
+    print word    
 
     if word in votes:
         votes[word] += 1
@@ -36,3 +42,6 @@ def add_vote(message):
 
 def get_top_ten_words():
     pass
+
+if __name__ == '__main__':
+    socketio.run(app)
