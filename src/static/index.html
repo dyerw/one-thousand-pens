@@ -1,15 +1,26 @@
 <DOCTYPE html>
 <html>
 <head>
-    <title>Untitled</title>
+    <title>One Thousand Pens</title>
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.16/socket.io.min.js"></script>
     <script src="static/js/libs/jquery.min.js"></script>
-    <script src="static/js/events.js"></script>
-    <script src="static/js/onethousandpens.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
+    <script src="static/js/libs/devbackbone.js"></script>
+    
 </head>
 <body>
-Hi there
+
+<script type="text/template" id="poll-template">
+	<table>
+		<th> Votes </th>
+		<% for (word in votes) { %>
+			<tr><td> <%=word%> </td> <td><%=votes[word]%></td></tr>
+		<% } %>
+	</table>   
+</script>
+
+<div id="poll_content"></div>
 
 <div id="story_content"></div>
 
@@ -19,5 +30,11 @@ Hi there
         <input type="submit" value="Vote">
     </form>
 </div>
+
+<script src="static/js/models.js"></script>
+<script src="static/js/views.js"></script>
+<script src="static/js/events.js"></script>
+<script src="static/js/onethousandpens.js"></script>
+
 </body>
 </html>
