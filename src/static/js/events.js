@@ -17,6 +17,7 @@ var Events = {
     },
 
     updatePoll: function(event) {
+        console.log("updating poll");
         poll.set({votes: event.votes});
     }
 }

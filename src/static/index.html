@@ -12,10 +12,19 @@
 <body>
 
 <script type="text/template" id="poll-template">
+	<%
+	// Sort the object into an array
+	sorted_votes = [];
+	for (word in votes) {
+		sorted_votes.push([word, votes[word]]);
+	}
+	sorted_votes.sort(function(a, b) {return b[1] - a[1]});
+	%>
+
 	<table>
 		<th> Votes </th>
-		<% for (word in votes) { %>
-			<tr><td> <%=word%> </td> <td><%=votes[word]%></td></tr>
+		<% for (i = 0; i < sorted_votes.length; i++) { %>
+			<tr><td> <%=sorted_votes[i][0]%> </td> <td><%=sorted_votes[i][1]%></td></tr>
 		<% } %>
 	</table>   
 </script>

@@ -14,6 +14,7 @@ socket = SocketIO(app)
 
 vote_manager = VoteManager(socket)
 
+
 @app.route('/')
 def index():
     """
@@ -31,8 +32,6 @@ def add_vote(message):
     word = message['word']
     vote_manager.queue.put(word)
 
-def get_top_ten_words():
-    pass
 
 if __name__ == '__main__':
     socket.run(app)

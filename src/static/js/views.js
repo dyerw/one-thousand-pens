@@ -9,9 +9,6 @@ var PollView = Backbone.View.extend({
     },
 
     render: function() {
-    	console.log("rendering");
-    	console.log(this.model.get('votes'));
-    	console.log(this.tpl(this.model.get('votes')));
     	this.$el.html(this.tpl(this.model.toJSON()));
     }
 
