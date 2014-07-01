@@ -14,5 +14,9 @@ var Events = {
         }
 
         socket.emit('vote', {word: wordVote});
+    },
+
+    updatePoll: function(event) {
+        console.log(event);
     }
 }

@@ -60,6 +60,6 @@ class VoteManager(object):
 	            else:
 	                i = len(votes)
 
-	            top_ten = [v for v in votes.items()][:i]
+	            top_ten = dict([v for v in votes.items()][:i])
 	            print "BROADCASTING: " + str(top_ten)
-	            self.socket.emit('updatepoll', {'votes': dict(top_ten)})
+	            self.socket.emit('updatepoll', {'votes': top_ten})
