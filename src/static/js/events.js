@@ -17,7 +17,11 @@ var Events = {
     },
 
     updatePoll: function(event) {
-        console.log("updating poll");
         poll.set({votes: event.votes});
+    },
+
+    showNextWord: function(event) {
+        console.log("new word!");
+        console.log(event.word);
     }
 }

@@ -13,6 +13,7 @@ class VoteManager(object):
 
     def __init__(self, socket):
         self.POLL_UPDATE_FREQ = 2
+        self.NEXT_WORD_FREQ = 15
         self.socket = socket
         self.queue = Queue.Queue()
         self._votes = {}
@@ -23,6 +24,7 @@ class VoteManager(object):
         # state
         thread.start_new_thread(self.update_votes)
         thread.start_new_thread(self.broadcast_poll)
+        thread.start_new_thread(self.broadcast_next_word)
 
     def get_votes(self):
         return self._votes
@@ -36,7 +38,6 @@ class VoteManager(object):
         """
         while True:
             word = self.queue.get(True)
-            print word
             
             if word in self._votes:
                 self._votes[word] += 1
@@ -52,14 +53,29 @@ class VoteManager(object):
             time.sleep(self.POLL_UPDATE_FREQ)
             votes = self._votes
 
+            # Only get ten votes if there's more than ten, 
+            # otherwise get all of them
+            if len(votes) > 10:
+                i = 10
+            else:
+                i = len(votes)
+
+            top_ten = dict([v for v in sorted(votes.items(), key=lambda vote: 0 - vote[1])][:i])
+
+            self.socket.emit('updatepoll', {'votes': top_ten})
+
+    def broadcast_next_word(self):
+        """
+        Every minute sends out what the next word was, clears the the votes,
+        and stores the chosen word in the database.
+        """
+        while True:
+            time.sleep(self.NEXT_WORD_FREQ)
+            votes = self._votes
+
             if len(votes) > 0:
-	            # Only get ten votes if there's more than ten, 
-	            # otherwise get all of them
-	            if len(votes) > 10:
-	                i = 10
-	            else:
-	                i = len(votes)
+                chosen_word = sorted(votes.items(), key=lambda vote: 0 - vote[1])[0][0]
+                self._votes = {}
 
-	            top_ten = dict([v for v in sorted(votes.items(), key=lambda vote: 0 - vote[1])][:i])
-
-	            self.socket.emit('updatepoll', {'votes': top_ten})
+                print chosen_word
+                self.socket.emit('nextword', {'word': chosen_word})
