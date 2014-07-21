@@ -3,8 +3,10 @@
 from gevent import monkey
 monkey.patch_all()
 
+import json
+
 from flask import Flask
-from flask.ext.socketio import SocketIO, emit
+from flask.ext.socketio import SocketIO
 
 from vote_manager import VoteManager
 
@@ -22,6 +24,13 @@ def index():
     """
     return app.send_static_file('index.html')
 
+
+@app.route('/words')
+def words():
+    """
+    Serves a JSON list of all the words used so far
+    """
+    return json.dumps([])
 
 @socket.on('vote')
 def add_vote(message):

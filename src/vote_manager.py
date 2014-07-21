@@ -1,9 +1,7 @@
 import Queue
 import time
 import thread
-import json
 
-from flask.ext.socketio import emit
 
 class VoteManager(object):
     """
@@ -74,8 +72,10 @@ class VoteManager(object):
             votes = self._votes
 
             if len(votes) > 0:
+                # The votes are sorted by number of votes the first index is the top voted
+                # word and the first index of that is the actual word
                 chosen_word = sorted(votes.items(), key=lambda vote: 0 - vote[1])[0][0]
                 self._votes = {}
 
-                print chosen_word
+                # TODO: add to database
                 self.socket.emit('nextword', {'word': chosen_word})

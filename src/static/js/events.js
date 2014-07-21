@@ -21,7 +21,6 @@ var Events = {
     },
 
     showNextWord: function(event) {
-        console.log("new word!");
-        console.log(event.word);
+        $('#story_content').append(event.word + " ");
     }
 }
