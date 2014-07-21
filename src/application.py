@@ -9,12 +9,21 @@ from flask import Flask
 from flask.ext.socketio import SocketIO
 
 from vote_manager import VoteManager
+from database import db
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'PolarBearSunset'
-socket = SocketIO(app)
 
-vote_manager = VoteManager(socket)
+# Init the database
+# TMP db is fine for now
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
+db.init_app(app)
+with app.app_context():
+    db.create_all()
+
+# Init the socket and the vote manager class
+socket = SocketIO(app)
+vote_manager = VoteManager(app, socket)
 
 
 @app.route('/')
