@@ -3,3 +3,9 @@ var Poll = Backbone.Model.extend({
 		'votes': {}
 	}
 });
+
+var Words = Backbone.Model.extend({
+    defaults: {
+        'prev_words': []
+    }
+});

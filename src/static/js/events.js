@@ -21,6 +21,6 @@ var Events = {
     },
 
     showNextWord: function(event) {
-        $('#story_content').append(event.word + " ");
+        words.set({prev_words: words.get('prev_words') + event.word})
     }
-}
+};

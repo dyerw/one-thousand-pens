@@ -29,13 +29,21 @@
 	</table>   
 </script>
 
-<div id="poll_content"></div>
+<script type="text/template" id="words-template">
+    <p>
+        <% for (i = 0; i < prev_words.length; i++) { %>
+            <%=prev_words[i]%>
+        <% } %>
+    </p>
+</script>
 
-<div id="story_content"></div>
+<div id="poll-content"></div>
 
-<div id="vote_content">
-    <form id="vote_form" action="#">
-        <input type="text" id="vote_input">
+<div id="story-content"></div>
+
+<div id="vote-content">
+    <form id="vote-form" action="#">
+        <input type="text" id="vote-input">
         <input type="submit" value="Vote">
     </form>
 </div>

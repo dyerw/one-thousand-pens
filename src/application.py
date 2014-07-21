@@ -10,6 +10,7 @@ from flask.ext.socketio import SocketIO
 
 from vote_manager import VoteManager
 from database import db
+from database.chosen_words import ChosenWords
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'PolarBearSunset'
@@ -39,7 +40,9 @@ def words():
     """
     Serves a JSON list of all the words used so far
     """
-    return json.dumps([])
+    chosen_words = ChosenWords.query.all()
+    chosen_words = [chosen_word.word for chosen_word in chosen_words]
+    return json.dumps(chosen_words)
 
 @socket.on('vote')
 def add_vote(message):

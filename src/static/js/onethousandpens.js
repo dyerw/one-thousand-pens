@@ -1,4 +1,6 @@
 var socket;
+var poll;
+var words;
 $(document).ready(function(){
     socket = io.connect();
     socket.emit('connect');
@@ -8,11 +10,11 @@ $(document).ready(function(){
     socket.on('nextword', Events.showNextWord);
 
     // Register form submit functionality
-    $('#vote_form').submit(function(event) {
-        Events.sendVote($('#vote_input').val());
+    $('#vote-form').submit(function(event) {
+        Events.sendVote($('#vote-input').val());
 
         // Clear the text field
-        $('#vote_input').val("");
+        $('#vote-input').val("");
 
         // Don't make a post request
         return false;
@@ -21,5 +23,23 @@ $(document).ready(function(){
 
     // Set up backbone models and views
     poll = new Poll();
-    poll_view = new PollView({model: poll});
+    var poll_view = new PollView({model: poll});
+
+    console.log("got there");
+    console.log(poll);
+
+    // Fetch previous words
+    var prev_words = null;
+    $.ajax({
+        url: '/words',
+        type: 'GET',
+        async: false,
+        dataType: 'json',
+        complete: function(data) {
+            prev_words = data;
+        }
+    });
+
+    words = new Words({'prev_words': prev_words});
+    var words_view = new WordsView({model: words});
 });
