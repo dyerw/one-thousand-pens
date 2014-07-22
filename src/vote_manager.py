@@ -2,8 +2,6 @@ import Queue
 import time
 import thread
 
-from flask import session
-
 from database.chosen_words import ChosenWords
 from database import db
 
