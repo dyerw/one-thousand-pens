@@ -1,7 +1,14 @@
+// Global variables
 var socket;
 var poll;
 var words;
+
 $(document).ready(function(){
+    // Connect over the web socket to the server
+    // the emitted message is sent since there were
+    // problems with socket.io not receiving from the
+    // server until it sent something, this message does
+    // not trigger any behavior on the server
     socket = io.connect();
     socket.emit('connect');
 
@@ -11,6 +18,8 @@ $(document).ready(function(){
 
     // Register form submit functionality
     $('#vote-form').submit(function(event) {
+        // Send the value of the input field to the
+        // server as a vote
         Events.sendVote($('#vote-input').val());
 
         // Clear the text field
@@ -21,7 +30,7 @@ $(document).ready(function(){
     });
     
 
-    // Set up backbone models and views
+    // Set up Backbone Models and Views
     poll = new Poll();
     var poll_view = new PollView({model: poll});
 

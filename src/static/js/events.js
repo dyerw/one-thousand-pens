@@ -3,7 +3,8 @@
 // new events from ui input
 var Events = {
 
-    /* Sends a vote for a word to the server
+    /*
+     * Sends a vote for a word to the server
      * @param {string} wordVote the word the user is voting for
      */
     sendVote: function(wordVote) {
@@ -16,10 +17,20 @@ var Events = {
         socket.emit('vote', {word: wordVote});
     },
 
+    /*
+     * Updates the poll to reflect the new vote counts.
+     * @param {object} event the event object given from the socket
+     *                       that should contain the new vote numbers
+     */
     updatePoll: function(event) {
         poll.set({votes: event.votes});
     },
 
+    /*
+     * Adds the newest word to the text content when it is chosen.
+     * @param {object} event the event object given from the socket
+     *                       should contain the newest word
+     */
     showNextWord: function(event) {
         words.set({prev_words: words.get('prev_words') + event.word})
     }
