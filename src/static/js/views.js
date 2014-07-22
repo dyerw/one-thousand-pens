@@ -5,6 +5,7 @@ var PollView = Backbone.View.extend({
     tpl: _.template($("#poll-template").html()),
 
     initialize: function() {
+        this.render();
         this.listenTo(this.model, "change", this.render);
     },
 
@@ -22,6 +23,7 @@ var WordsView = Backbone.View.extend({
     tpl: _.template($("#words-template").html()),
 
     initialize: function() {
+        this.render();
         this.listenTo(this.model, "change", this.render);
     },
 

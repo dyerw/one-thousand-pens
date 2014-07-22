@@ -25,9 +25,6 @@ $(document).ready(function(){
     poll = new Poll();
     var poll_view = new PollView({model: poll});
 
-    console.log("got there");
-    console.log(poll);
-
     // Fetch previous words
     var prev_words = null;
     $.ajax({
@@ -35,7 +32,7 @@ $(document).ready(function(){
         type: 'GET',
         async: false,
         dataType: 'json',
-        complete: function(data) {
+        success: function(data) {
             prev_words = data;
         }
     });
