@@ -4,8 +4,9 @@ from gevent import monkey
 monkey.patch_all()
 
 import json
+import uuid
 
-from flask import Flask
+from flask import Flask, session
 from flask.ext.socketio import SocketIO
 
 from vote_manager import VoteManager
@@ -32,6 +33,9 @@ def index():
     """
     Serves up our client to the user.
     """
+    # Give the user a session cookie so their vote
+    # rate can be monitored
+    session['user_id'] = str(uuid.uuid4())
     return app.send_static_file('index.html')
 
 
@@ -50,8 +54,9 @@ def add_vote(message):
     When a vote event is emitted by the client we want to add
     that vote to our vote managers queue for it to handle.
     """
-    word = message['word']
-    vote_manager.queue.put(word)
+    if 'user_id' in session:
+        word = message['word']
+        vote_manager.queue.put((word, session['user_id']))
 
 
 if __name__ == '__main__':

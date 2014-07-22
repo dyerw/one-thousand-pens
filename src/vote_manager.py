@@ -2,6 +2,8 @@ import Queue
 import time
 import thread
 
+from flask import session
+
 from database.chosen_words import ChosenWords
 from database import db
 
@@ -9,15 +11,19 @@ from database import db
 class VoteManager(object):
     """
     A class that manages storing votes. Handles all
-    concurrent read/write issues internally.
+    concurrent read/write issues internally. Also runs
+    worker threads to continually send out updates to
+    all clients.
     """
 
     def __init__(self, app, socket):
         self.POLL_UPDATE_FREQ = 2
         self.NEXT_WORD_FREQ = 15
+        self.VOTE_FREQ = 0.5  # seconds
         self.socket = socket
         self.queue = Queue.Queue()
         self.app = app
+        self._user_vote_times = {}
         self._votes = {}
 
         # Start threads to continually update
@@ -39,8 +45,19 @@ class VoteManager(object):
         of one.
         """
         while True:
-            word = self.queue.get(True)
-            
+            word, user_id = self.queue.get(True)
+
+            # See if the user has voted before
+            if user_id in self._user_vote_times:
+                # Make sure they haven't voted since the last time specified by vote frequency
+                if time.time() - self._user_vote_times[user_id] < self.VOTE_FREQ:
+                    # Skip this vote, the user is being throttled
+                    continue
+
+            # Update the user's last voted time
+            self._user_vote_times[user_id] = time.time()
+
+            # Add their vote
             if word in self._votes:
                 self._votes[word] += 1
             else:
