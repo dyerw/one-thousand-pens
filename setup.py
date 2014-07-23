@@ -7,6 +7,8 @@ setup(name='One Thousand Pens',
       package_dir={'':'src'},
       packages=find_packages('src'),
       install_requires=[
+          'coverage',
+          'python-coveralls',
           'sqlalchemy',
           'flask',
           'flask-sqlalchemy',
