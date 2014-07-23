@@ -50,16 +50,15 @@
 </script>
 
 <script type="text/template" id="words-template">
-    <p>
-        <% for (i = 0; i < prev_words.length; i++) { %>
-            <%-prev_words[i]%>
-        <% } %>
-    </p>
+    <% for (i = 0; i < prev_words.length; i++) { %>
+        <%-prev_words[i]%>
+    <% } %>
 </script>
 
 <div id="top">
     <div id="main-pane">
-        <span id="title">One Thousand Pens</span>
+        <div id="title">One Thousand Pens</div>
+        <div id="subtitle">the public word processor</div>
         <div id="story-content"></div>
     </div>
 
@@ -70,7 +69,7 @@
     <div id="vote-content">
         <form id="vote-form" action="#">
             <input type="text" id="vote-input">
-            <input type="submit" value="Vote">
+            <input id="vote-input-button" type="submit" value="Vote">
         </form>
     </div>
 </div>
