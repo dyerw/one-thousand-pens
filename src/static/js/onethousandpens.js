@@ -51,5 +51,5 @@ $(document).ready(function(){
     var words_view = new WordsView({model: words});
 
     // Set countdown timer ticking
-    window.setInterval(Events.countdown, 1000);
+    window.setInterval(Events.countdown, 500);
 });

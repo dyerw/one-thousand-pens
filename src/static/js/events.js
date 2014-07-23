@@ -42,7 +42,7 @@ var Events = {
     countdown: function() {
         var secs_left = poll.get('secs_left');
         if (secs_left != 0) {
-            poll.set({secs_left: secs_left - 1});
+            poll.set({secs_left: secs_left - 0.5});
         }
     }
 };
