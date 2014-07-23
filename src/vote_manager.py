@@ -73,6 +73,16 @@ class VoteManager(object):
             else:
                 self._votes[word] = 1
 
+    def get_top_ten_votes(self):
+        # Only get ten votes if there's more than ten,
+        # otherwise get all of them
+        if len(self._votes) > 10:
+            i = 10
+        else:
+            i = len(self._votes)
+
+        return dict([v for v in sorted(self._votes.items(), key=lambda vote: 0 - vote[1])][:i])
+
     def broadcast_poll(self):
         """
         Sends out the top ten (or less) words currently being voted for and
@@ -80,18 +90,7 @@ class VoteManager(object):
         """
         while not self.please_stop:
             time.sleep(self.POLL_UPDATE_FREQ)
-            votes = self._votes
-
-            # Only get ten votes if there's more than ten, 
-            # otherwise get all of them
-            if len(votes) > 10:
-                i = 10
-            else:
-                i = len(votes)
-
-            top_ten = dict([v for v in sorted(votes.items(), key=lambda vote: 0 - vote[1])][:i])
-
-            self.socket.emit('updatepoll', {'votes': top_ten})
+            self.socket.emit('updatepoll', {'votes': self.get_top_ten_votes()})
 
     def get_top_voted_word(self):
         """
@@ -131,3 +130,7 @@ class VoteManager(object):
 
                 # Broadcast the word to all listening clients
                 self.socket.emit('nextword', {'word': chosen_word})
+
+                # Update the votes so to keep them in sync with when the new
+                # word pops up
+                self.socket.emit('updatepoll', {'votes': self.get_top_ten_votes()})
