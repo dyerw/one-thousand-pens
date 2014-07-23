@@ -14,21 +14,38 @@
 <body>
 
 <script type="text/template" id="poll-template">
+    <div id="vote_title">
+        Next Word
+    </div>
+
 	<%
-	// Sort the object into an array
-	sorted_votes = [];
-	for (word in votes) {
-		sorted_votes.push([word, votes[word]]);
-	}
-	sorted_votes.sort(function(a, b) {return b[1] - a[1]});
+        // Sort the object into an array by number of votes
+        var sorted_votes = [];
+        for (word in votes) {
+            sorted_votes.push([word, votes[word]]);
+        }
+        sorted_votes.sort(function(a, b) {return b[1] - a[1]});
+
+        // Get the highest vote number to determine width of UI
+        // elements
+        if (sorted_votes.length > 0) {
+            var max_vote = sorted_votes[0][1];
+        } else {
+            var max_vote = 0;
+        }
 	%>
 
-	<table>
-		<th> Votes </th>
-		<% for (i = 0; i < sorted_votes.length; i++) { %>
-			<tr><td> <%-sorted_votes[i][0]%> </td> <td><%-sorted_votes[i][1]%></td></tr>
-		<% } %>
-	</table>   
+
+    <% for (i = 0; i < sorted_votes.length; i++) {
+           var word = sorted_votes[i][0];
+           var votes = sorted_votes[i][1];
+    %>
+        <div class="votes_display">
+            <span class="vote-word"> <%-word%> </span>
+            <span class="vote-number"> <%-votes%> </span>
+            <div class="vote-percentage" style="width: <%-votes/max_vote * 100%>%;"></div>
+        </div>
+    <% } %>
 </script>
 
 <script type="text/template" id="words-template">

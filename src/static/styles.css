@@ -35,6 +35,11 @@
     width: 20%;
 }
 
+.vote-percentage {
+    height: 15px;
+    background-color: blue;
+}
+
 #title {
     margin-left: 20px;
     padding-bottom: -30px;
