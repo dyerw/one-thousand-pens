@@ -93,6 +93,25 @@ class VoteManager(object):
 
             self.socket.emit('updatepoll', {'votes': top_ten})
 
+    def get_top_voted_word(self):
+        """
+        Gets the currently top voted word and how many votes it has and returns
+        both as a tuple
+        """
+        # The votes are sorted by number of votes, the first index is the top voted word
+        return sorted(self._votes.items(), key=lambda vote: 0 - vote[1])[0]
+
+    def add_word_to_database(self, word, votes):
+        """
+        Given a word and how many votes it got, will add it to the database with
+        the current time.
+        """
+        new_word = ChosenWords(word, time.strftime('%Y-%m-%d %H:%M:%S'), votes)
+
+        with self.app.app_context():
+            db.session.add(new_word)
+            db.session.commit()
+
     def broadcast_next_word(self):
         """
         Every minute sends out what the next word was, clears the the votes,
@@ -100,22 +119,15 @@ class VoteManager(object):
         """
         while not self.please_stop:
             time.sleep(self.NEXT_WORD_FREQ)
-            votes = self._votes
 
-            if len(votes) > 0:
-                # The votes are sorted by number of votes the first index is the top voted
-                # word and the first index of that is the actual word
-                chosen_word_votes = sorted(votes.items(), key=lambda vote: 0 - vote[1])[0]
-                chosen_word = chosen_word_votes[0]
-                chosen_votes = chosen_word_votes[1]
+            # We need at least one vote to choose a word
+            if len(self._votes) > 0:
+                chosen_word, chosen_votes = self.get_top_voted_word()
 
                 self._votes = {}
 
                 # Add the voted for word to the database so it can be served up later
-                new_word = ChosenWords(chosen_word, time.strftime('%Y-%m-%d %H:%M:%S'), chosen_votes)
-                with self.app.app_context():
-                    db.session.add(new_word)
-                    db.session.commit()
+                self.add_word_to_database(chosen_word, chosen_votes)
 
                 # Broadcast the word to all listening clients
                 self.socket.emit('nextword', {'word': chosen_word})

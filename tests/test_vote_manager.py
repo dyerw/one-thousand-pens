@@ -16,6 +16,12 @@ class TestVoteManager(unittest.TestCase):
     def setUp(self):
         self.vm = VoteManager(app, socket, testing=True)
 
+    def test_get_top_voted_word(self):
+        pass
+
+    def test_add_word_to_database(self):
+        pass
+
     def test_throttles_votes(self):
         # Add 1,000,000 votes to the queue,
         # we need this many or we will run out of
