@@ -1,4 +1,5 @@
 // Global variables
+var NEXT_WORD_FREQ = 15;
 var socket;
 var poll;
 var words;
@@ -48,4 +49,7 @@ $(document).ready(function(){
 
     words = new Words({'prev_words': prev_words});
     var words_view = new WordsView({model: words});
+
+    // Set countdown timer ticking
+    window.setInterval(Events.countdown, 1000);
 });

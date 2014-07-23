@@ -4,7 +4,13 @@ var Poll = Backbone.Model.extend({
         // and the value is the number of votes.
         // This will be cleared every time a new
         // word is chosen.
-		'votes': {}
+		'votes': {},
+
+        // Approx. number of seconds until
+        // next vote is selected
+        'secs_left': 0,
+
+        'max_seconds': 15
 	}
 });
 

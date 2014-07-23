@@ -31,13 +31,39 @@
 
 #poll-content {
     font-size: 20px;
+    border-left: 1px solid black;
     margin-left: 80%;
     width: 20%;
+    height: 100%;
+}
+
+#votes-display {
+    font-size: 30px;
+    font-family: 'La Belle Aurore', serif;
+    padding: 5px;
+}
+
+#votes-display .vote-number {
+    color: gray;
+    font-size: 15px;
+}
+
+#vote-title {
+    font-size: 35px;
+    padding-left: 10px;
+    padding-bottom: 10px;
+    width: 100%;
+    border-bottom: 1px solid black;
+}
+
+#countdown-timer {
+    background-color: black;
+    height: 10px;
 }
 
 .vote-percentage {
     height: 15px;
-    background-color: blue;
+    background-color: gray;
 }
 
 #title {

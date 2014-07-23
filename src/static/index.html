@@ -14,9 +14,10 @@
 <body>
 
 <script type="text/template" id="poll-template">
-    <div id="vote_title">
+    <div id="vote-title">
         Next Word
     </div>
+    <div id="countdown-timer" style="width: <%-secs_left/max_seconds * 100%>%;"></div>
 
 	<%
         // Sort the object into an array by number of votes
@@ -40,7 +41,7 @@
            var word = sorted_votes[i][0];
            var votes = sorted_votes[i][1];
     %>
-        <div class="votes_display">
+        <div class="votes-display">
             <span class="vote-word"> <%-word%> </span>
             <span class="vote-number"> <%-votes%> </span>
             <div class="vote-percentage" style="width: <%-votes/max_vote * 100%>%;"></div>

@@ -32,6 +32,17 @@ var Events = {
      *                       should contain the newest word
      */
     showNextWord: function(event) {
+        poll.set({secs_left: NEXT_WORD_FREQ});
         words.set({prev_words: words.get('prev_words').concat([event.word])});
+    },
+
+    /*
+     * Decrements number of seconds until next vote goes through
+     */
+    countdown: function() {
+        var secs_left = poll.get('secs_left');
+        if (secs_left != 0) {
+            poll.set({secs_left: secs_left - 1});
+        }
     }
 };
