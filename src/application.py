@@ -54,7 +54,9 @@ def add_vote(message):
     When a vote event is emitted by the client we want to add
     that vote to our vote managers queue for it to handle.
     """
-    if 'user_id' in session:
+    # Users can only vote with a cookie so they can be throttled,
+    # a 'word' cannot have spaces.
+    if 'user_id' in session and not " " in message['word']:
         word = message['word']
         vote_manager.queue.put((word, session['user_id']))
 
