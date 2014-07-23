@@ -1,0 +1,49 @@
+@font-face {
+  font-family: 'La Belle Aurore';
+  font-style: normal;
+  font-weight: 400;
+  src: local('La Belle Aurore'), local('LaBelleAurore'), url(http://fonts.gstatic.com/s/labelleaurore/v5/Irdbc4ASuUoWDjd_Wc3mdyPuxW3DwjEqq93dVR72jP4.woff) format('woff');
+}
+
+@font-face {
+  font-family: 'EB Garamond';
+  font-style: normal;
+  font-weight: 400;
+  src: local('EB Garamond'), local('EBGaramond'), url(http://themes.googleusercontent.com/static/fonts/ebgaramond/v5/kYZt1bJ8UsGAPRGnkXPeFYbN6UDyHWBl620a-IRfuBk.woff) format('woff');
+}
+
+#top {
+    width: 100%;
+    height: 90%;
+}
+
+#main-pane {
+    height: 100%;
+    width: 80%;
+    float: left;
+}
+
+#story-content {
+    font-family: 'EB Garamond', sans-serif;
+    padding: 20px;
+    font-size: 30px;
+}
+
+#poll-content {
+    font-size: 20px;
+    margin-left: 80%;
+    width: 20%;
+}
+
+#title {
+    margin-left: 20px;
+    padding-bottom: -30px;
+    font-size: 70px;
+    font-family: 'La Belle Aurore', cursive;
+}
+
+#vote-background {
+    width: 100%;
+    height: 10%;
+    background-color: lightgray;
+}
