@@ -8,6 +8,11 @@ var Events = {
      * @param {string} wordVote the word the user is voting for
      */
     sendVote: function(wordVote) {
+        // Make sure there's at least one character
+        if (wordVote == "") {
+            return
+        }
+
         // Make sure it's just one word
         if (wordVote.split(" ").length != 1) {
            // TODO: alert the user somehow 

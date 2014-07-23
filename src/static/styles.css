@@ -89,4 +89,15 @@
 #vote-input {
     font-size: 30px;
     height: 70%;
+    font-family: 'EB Garamond', sans-serif;
+}
+
+#vote-input-button {
+    font-family: 'EB Garamond', sans-serif;
+    font-size: 30px;
+    background: none;
+    text-shadow: none;
+    border: 1px solid black;
+    height: 70%;
+    cursor: pointer;
 }
