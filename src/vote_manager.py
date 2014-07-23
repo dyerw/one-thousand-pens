@@ -1,6 +1,6 @@
 import Queue
 import time
-import thread
+import threading
 
 from database.chosen_words import ChosenWords
 from database import db
@@ -14,7 +14,7 @@ class VoteManager(object):
     all clients.
     """
 
-    def __init__(self, app, socket):
+    def __init__(self, app, socket, testing=False):
         self.POLL_UPDATE_FREQ = 2
         self.NEXT_WORD_FREQ = 15
         self.VOTE_FREQ = 0.5  # seconds
@@ -24,13 +24,25 @@ class VoteManager(object):
         self._user_vote_times = {}
         self._votes = {}
 
+        # This is a flag that if turned true will end all
+        # threads after their next loop
+        self.please_stop = False
+
         # Start threads to continually update
         # the internal vote state and update
         # all listening clients with the vote
         # state
-        thread.start_new_thread(self.update_votes)
-        thread.start_new_thread(self.broadcast_poll)
-        thread.start_new_thread(self.broadcast_next_word)
+        self.update_votes_thread = threading.Thread(target=self.update_votes)
+        self.broadcast_poll_thread = threading.Thread(target=self.broadcast_poll)
+        self.broadcast_next_word_thread = threading.Thread(target=self.broadcast_next_word)
+
+        # If we are testing the test suite will manually
+        # start and end these threads as needed, so we do
+        # not want to start them
+        if not testing:
+            self.update_votes_thread.start()
+            self.broadcast_poll_thread.start()
+            self.broadcast_next_word_thread.start()
 
     def get_votes(self):
         return self._votes
@@ -42,7 +54,7 @@ class VoteManager(object):
         words vote counter or add it to the dict with a count 
         of one.
         """
-        while True:
+        while not self.please_stop:
             word, user_id = self.queue.get(True)
 
             # See if the user has voted before
@@ -66,7 +78,7 @@ class VoteManager(object):
         Sends out the top ten (or less) words currently being voted for and
         their vote counts to all clients every few seconds.
         """
-        while True:
+        while not self.please_stop:
             time.sleep(self.POLL_UPDATE_FREQ)
             votes = self._votes
 
@@ -86,7 +98,7 @@ class VoteManager(object):
         Every minute sends out what the next word was, clears the the votes,
         and stores the chosen word in the database.
         """
-        while True:
+        while not self.please_stop:
             time.sleep(self.NEXT_WORD_FREQ)
             votes = self._votes
 

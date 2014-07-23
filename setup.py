@@ -12,5 +12,6 @@ setup(name='One Thousand Pens',
           'flask-sqlalchemy',
           'flask-restful',
           'flask-socketio'
-      ]
+      ],
+      test_suite='tests'
      )
