@@ -32,6 +32,6 @@ var Events = {
      *                       should contain the newest word
      */
     showNextWord: function(event) {
-        words.set({prev_words: words.get('prev_words') + event.word})
+        words.set({prev_words: words.get('prev_words').concat([event.word])});
     }
 };
