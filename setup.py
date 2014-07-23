@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(name='One Thousand Pens',
-      version='0.01',
+      version='0.1',
       description='communal storytelling site',
       author='Some dudes',
       package_dir={'':'src'},
