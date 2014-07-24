@@ -64,4 +64,4 @@ def add_vote(message):
 
 
 if __name__ == '__main__':
-    socket.run(app, host='0.0.0.0')
+    socket.run(app, host='0.0.0.0', port=80)
