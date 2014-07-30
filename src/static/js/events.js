@@ -38,6 +38,7 @@ var Events = {
      *                       should contain the newest word
      */
     showNextWord: function(event) {
+        poll.set({votes: {}});
         poll.set('has_voted', false);
         poll.set({secs_left: NEXT_WORD_FREQ});
         words.set({prev_words: words.get('prev_words').concat([event.word])});

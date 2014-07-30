@@ -15,7 +15,7 @@ class VoteManager(object):
     """
 
     def __init__(self, app, socket, testing=False):
-        self.POLL_UPDATE_FREQ = 1
+        self.POLL_UPDATE_FREQ = 0.2
         self.NEXT_WORD_FREQ = 15
         self.VOTE_FREQ = 2  # seconds
         self.socket = socket
