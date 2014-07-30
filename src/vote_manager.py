@@ -21,7 +21,7 @@ class VoteManager(object):
         self.socket = socket
         self.queue = Queue.Queue()
         self.app = app
-        self._user_vote_times = {}
+        self._voted_users = []
         self._votes = {}
 
         # This is a flag that if turned true will end all
@@ -58,14 +58,11 @@ class VoteManager(object):
             word, user_id = self.queue.get(True)
 
             # See if the user has voted before
-            if user_id in self._user_vote_times:
-                # Make sure they haven't voted since the last time specified by vote frequency
-                if time.time() - self._user_vote_times[user_id] < self.VOTE_FREQ:
-                    # Skip this vote, the user is being throttled
-                    continue
+            if user_id in self._voted_users:
+                continue
 
             # Update the user's last voted time
-            self._user_vote_times[user_id] = time.time()
+            self._voted_users.append(user_id)
 
             # Add their vote
             if word in self._votes:
@@ -124,6 +121,7 @@ class VoteManager(object):
                 chosen_word, chosen_votes = self.get_top_voted_word()
 
                 self._votes = {}
+                self._voted_users = []
 
                 # Add the voted for word to the database so it can be served up later
                 self.add_word_to_database(chosen_word, chosen_votes)
