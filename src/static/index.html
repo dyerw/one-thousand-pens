@@ -44,6 +44,9 @@
            var votes = sorted_votes[i][1];
     %>
         <div class="votes-display">
+            <a class="vote-arrow" onclick="Events.sendVote('<%-word%>');">
+                <img src="static/assets/uparrow.png">
+            </a>
             <span class="vote-word"> <%-word%> </span>
             <span class="vote-number"> <%-votes%> </span>
             <div class="vote-percentage" style="width: <%-votes/max_vote * 100%>%;"></div>

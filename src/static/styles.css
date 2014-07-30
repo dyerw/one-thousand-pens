@@ -55,6 +55,10 @@ body {
     font-size: 15px;
 }
 
+.vote-arrow {
+    cursor: pointer;
+}
+
 #vote-title {
     font-size: 35px;
     padding-left: 10px;

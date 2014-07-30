@@ -10,7 +10,9 @@ var Poll = Backbone.Model.extend({
         // next vote is selected
         'secs_left': 0,
 
-        'max_seconds': 15
+        'max_seconds': 15,
+
+        'has_voted': true
 	}
 });
 
