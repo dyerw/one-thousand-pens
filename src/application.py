@@ -48,6 +48,7 @@ def words():
     chosen_words = [chosen_word.word for chosen_word in chosen_words]
     return json.dumps(chosen_words)
 
+
 @socket.on('vote')
 def add_vote(message):
     """

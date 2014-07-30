@@ -48,6 +48,21 @@ class VoteManager(object):
     def get_votes(self):
         return self._votes
 
+    def user_can_vote(self, user_id):
+        """
+        Checks if the user with the given user id has voted too recently
+        to be allowed to vote again
+        :param user_id: the id of the voting user
+        :return:        true if the user can vote, false otherwise
+        """
+        # If we don't have the user's last voted time, he has yet to vote
+        if user_id in self._user_vote_times:
+            # The difference between right now and the time the user last voted
+            # must be less than the vote frequency constant
+            return time.time() - self._user_vote_times[user_id] < self.VOTE_FREQ
+
+        return True
+
     def update_votes(self):
         """
         Attempts to retrieve available votes from the queue.
@@ -59,20 +74,15 @@ class VoteManager(object):
             word, user_id = self.queue.get(True)
 
             # See if the user has voted before
-            if user_id in self._user_vote_times:
-                # Make sure they haven't voted since the last time specified by vote frequency
-                if time.time() - self._user_vote_times[user_id] < self.VOTE_FREQ:
-                    # Skip this vote, the user is being throttled
-                    continue
+            if self.user_can_vote(user_id):
+                # Update the user's last voted time
+                self._user_vote_times[user_id] = time.time()
 
-            # Update the user's last voted time
-            self._user_vote_times[user_id] = time.time()
-
-            # Add their vote
-            if word in self._votes:
-                self._votes[word] += 1
-            else:
-                self._votes[word] = 1
+                # Add their vote
+                if word in self._votes:
+                    self._votes[word] += 1
+                else:
+                    self._votes[word] = 1
 
     def get_top_ten_votes(self):
         # Only get ten votes if there's more than ten,

@@ -8,13 +8,28 @@ if 'threading' in sys.modules:
 import unittest
 import time
 
-from application import app, socket
+from flask import session
+
+from application import app, socket, add_vote
 from vote_manager import VoteManager
 
 
 class TestVoteManager(unittest.TestCase):
     def setUp(self):
         self.vm = VoteManager(app, socket, testing=True)
+
+    def test_vote(self):
+        self.vm.update_votes_thread.start()
+
+        with app.test_request_context():
+            session['user_id'] = 'test'
+            add_vote({'word': 'testword'})
+
+        # FIXME: I can't test this multithreading stuff very
+        # well at all
+
+    def test_cant_vote_for_last_word(self):
+        pass
 
     def test_get_top_voted_word(self):
         pass
