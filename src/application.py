@@ -5,6 +5,7 @@ monkey.patch_all()
 
 import json
 import uuid
+import time
 
 from flask import Flask, session
 from flask.ext.socketio import SocketIO
@@ -12,6 +13,7 @@ from flask.ext.socketio import SocketIO
 from vote_manager import VoteManager
 from database import db
 from database.chosen_words import ChosenWords
+from database.user_connections import UserConnections
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'PolarBearSunset'
@@ -28,6 +30,12 @@ socket = SocketIO(app)
 vote_manager = VoteManager(app, socket)
 
 
+def log_connect(user_id):
+    connection = UserConnections('connect', time.time(), user_id)
+    db.session.add(connection)
+    db.session.commit()
+
+
 @app.route('/')
 def index():
     """
@@ -36,6 +44,7 @@ def index():
     # Give the user a session cookie so their vote
     # rate can be monitored
     session['user_id'] = str(uuid.uuid4())
+    log_connect(session['user_id'])
     return app.send_static_file('index.html')
 
 
@@ -63,5 +72,12 @@ def add_vote(message):
         vote_manager.queue.put((word, session['user_id']))
 
 
+@socket.on('disconnect')
+def log_disconnect():
+    connection = UserConnections('disconnect', time.time(), session['user_id'])
+    db.session.add(connection)
+    db.session.commit()
+    db.session.commit()
+
 if __name__ == '__main__':
-    socket.run(app, host='0.0.0.0', port=80)
+    socket.run(app, host='0.0.0.0', port=5000)
