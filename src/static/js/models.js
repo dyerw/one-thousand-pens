@@ -12,7 +12,7 @@ var Poll = Backbone.Model.extend({
 
         'max_seconds': 15,
 
-        'has_voted': true
+        'has_voted': false
 	}
 });
 
