@@ -55,10 +55,12 @@ def add_vote(message):
     that vote to our vote managers queue for it to handle.
     """
     # Users can only vote with a cookie so they can be throttled,
-    # a 'word' cannot have spaces and must be less than 15 chars
+    # a 'word' cannot have spaces and must be less than 15 chars,
+    # it cannot be the same as the last voted in word
     if 'user_id' in session \
             and not " " in message['word'] \
-            and len(message['word']) <= 15:
+            and len(message['word']) <= 15 \
+            and message['word'] is not vote_manager.last_voted_word:
         word = message['word']
         vote_manager.queue.put((word, session['user_id']))
 

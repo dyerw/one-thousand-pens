@@ -23,6 +23,7 @@ class VoteManager(object):
         self.app = app
         self._user_vote_times = {}
         self._votes = {}
+        self.last_voted_word = ""
 
         # This is a flag that if turned true will end all
         # threads after their next loop
@@ -127,6 +128,9 @@ class VoteManager(object):
 
                 # Add the voted for word to the database so it can be served up later
                 self.add_word_to_database(chosen_word, chosen_votes)
+
+                # Keep track of the last voted in word to prevent duplicates
+                self.last_voted_word = chosen_word
 
                 # Broadcast the word to all listening clients
                 self.socket.emit('nextword', {'word': chosen_word})
