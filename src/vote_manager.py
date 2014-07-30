@@ -23,6 +23,7 @@ class VoteManager(object):
         self.app = app
         self._voted_users = []
         self._votes = {}
+        self.last_word = ""
 
         # This is a flag that if turned true will end all
         # threads after their next loop
@@ -132,3 +133,6 @@ class VoteManager(object):
                 # Update the votes so to keep them in sync with when the new
                 # word pops up
                 self.socket.emit('updatepoll', {'votes': self.get_top_ten_votes()})
+
+                # Keep track of the last word to prevent repetition
+                self.last_word = chosen_word
