@@ -57,9 +57,13 @@
 </script>
 
 <script type="text/template" id="words-template">
-    <% for (i = 0; i < prev_words.length; i++) { %>
-        <%-prev_words[i]%>
-    <% } %>
+    <%
+    var text = "";
+    for (i = 0; i < prev_words.length; i++) {
+        text = text + prev_words[i];
+    }
+    %>
+    <%-text%>
 </script>
 
 <div id="top">
