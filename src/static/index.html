@@ -15,57 +15,6 @@
 </head>
 <body>
 
-<script type="text/template" id="poll-template">
-    <div id="vote-title">
-        Next Word
-    </div>
-    <div id="countdown-timer" style="width: <%-secs_left/max_seconds * 100%>%;"></div>
-
-	<%
-        // Sort the object into an array by number of votes
-        var sorted_votes = [];
-        for (word in votes) {
-            sorted_votes.push([word, votes[word]]);
-        }
-        sorted_votes.sort(function(a, b) {return b[1] - a[1]});
-
-        // Get the highest vote number to determine width of UI
-        // elements
-        if (sorted_votes.length > 0) {
-            var max_vote = sorted_votes[0][1];
-        } else {
-            var max_vote = 0;
-        }
-	%>
-
-
-    <% for (i = 0; i < sorted_votes.length; i++) {
-           var word = sorted_votes[i][0];
-           var votes = sorted_votes[i][1];
-    %>
-        <div class="votes-display">
-            <% if (!has_voted) { %>
-            <a class="vote-arrow" onclick="Events.sendVote('<%-word%>');">
-                <img src="static/assets/uparrow.png">
-            </a>
-            <% } %>
-            <span class="vote-word"> <%-word%> </span>
-            <span class="vote-number"> <%-votes%> </span>
-            <div class="vote-percentage" style="width: <%-votes/max_vote * 100%>%;"></div>
-        </div>
-    <% } %>
-</script>
-
-<script type="text/template" id="words-template">
-    <%
-    var text = "";
-    for (i = 0; i < prev_words.length; i++) {
-        text = text + prev_words[i];
-    }
-    %>
-    <%-text%>
-</script>
-
 <div id="top">
     <div id="main-pane">
         <div id="title">One Thousand Pens</div>
