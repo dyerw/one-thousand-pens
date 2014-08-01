@@ -14,6 +14,9 @@ describe("WordsView", function() {
     "words", "Chapter", "NotAllowed", "words", "wow", "we", "need", ".",
     "ChaPteR", "Coolio", ":", "A", "Subtitle", "Will"];
 
+    var test_words_end_in_title = ["these", "are,", "some", "words", ".",
+    "Chapter"];
+
     beforeEach(function() {
         $('body').append('<div id="#story-content"></div>');
         this.wordsView = new WordsView({'model': new Words()});
@@ -48,7 +51,7 @@ describe("WordsView", function() {
         expect(spacedWords).toBe("these are, some words. some. more!!!!! words: how abou?t that?");
     });
 
-    it("creates a list of chapter titles, subtitles, and text.", function() {
+    it("creates a list of chapter titles, subtitles, and text when it ends in a text block.", function() {
         this.wordsView.model.set('prev_words', test_words_with_chapters);
 
         var expectedList = [['text', 'these are, some words.'], ['title', 'Chapter 4:'],
@@ -61,28 +64,43 @@ describe("WordsView", function() {
 
         expect(contentList.length).toBe(expectedList.length);
 
-        console.log(contentList);
-        console.log(expectedList);
-
         for (var i = 0; i < contentList.length; i++) {
             expect(contentList[i]).toEqual(expectedList[i]);
         }
+    });
 
-
+    it("creates a list of chapter titles, subtitles, and text when it ends in a subtitle block.", function() {
         // Test text that cuts off in the subtitle
-        /*
         this.wordsView.model.set('prev_words', test_words_end_in_subtitle);
 
         var expectedInSubtitleList = [['text', 'these are, some words.'], ['title', 'Chapter 4:'],
-                            ['subtitle', 'Subtitle of Thing some'], ['text', 'more words words Chapter NotAllowed' +
+                            ['subtitle', 'Subtitle of Thing some.'], ['text', 'more words words Chapter NotAllowed' +
                              ' words wow we need.'],
                             ['title', 'ChaPteR Coolio:'], ['subtitle', 'A Subtitle Will']];
 
+        var contentList = this.wordsView.getContentList();
+
         expect(contentList.length).toBe(expectedInSubtitleList.length);
 
-        for (i = 0; i < contentList.length; i++) {
-            expect(contentList[i]).toEqual(expectedList[i]);
+        for (var i = 0; i < contentList.length; i++) {
+            expect(contentList[i]).toEqual(expectedInSubtitleList[i]);
         }
-        */
+    });
+
+    it("creates a list of chapter titles, subtitles, and text when it ends in a title block.", function() {
+        // Test text that cuts off in the subtitle
+        this.wordsView.model.set('prev_words', test_words_end_in_title);
+
+        var expectedInSubtitleList = [['text', 'these are, some words.'], ['title', 'Chapter']];
+
+        var contentList = this.wordsView.getContentList();
+
+        expect(contentList.length).toBe(expectedInSubtitleList.length);
+        console.log(contentList);
+        console.log(expectedInSubtitleList);
+
+        for (var i = 0; i < contentList.length; i++) {
+            expect(contentList[i]).toEqual(expectedInSubtitleList[i]);
+        }
     });
 });

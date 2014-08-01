@@ -142,25 +142,36 @@ var WordsView = Backbone.View.extend({
 
             // This is a Chapter
             } else if (word.toLowerCase() == 'chapter' && wordsSinceChapter > 7) {
-                // Add the accumulated text block to the list and add the chapter
-                // title
                 var text = ['text', this.formatText(textBlock)];
-                var title = ['title', word + " " + words[i + 1] + ":"];
-
                 contentList.push(text);
-                contentList.push(title);
+
+                var title;
+
+                // If the text ends here, just leave it at "chapter"
+                if (words[i + 1] == undefined) {
+                    title = ['title', word];
+                    contentList.push(title);
+                } else {
+
+                    // Add the accumulated text block to the list and add the chapter
+                    // title
+
+                    title = ['title', word + " " + words[i + 1] + ":"];
+                    contentList.push(title);
+
+                    inSubtitle = true;
+
+                    // Check if the users supplied a colon two words ahead
+                    // and skip ahead the proper amount
+                    if (words[i + 2] == ':') {
+                        i = i + 2;
+                    } else {
+                        i = i + 1;
+                    }
+                }
 
                 wordsSinceChapter = 0;
                 textBlock = [];
-                inSubtitle = true;
-
-                // Check if the users supplied a colon two words ahead
-                // and skip ahead the proper amount
-                if (words[i + 2] == ':') {
-                    i = i + 2;
-                } else {
-                    i = i + 1;
-                }
 
             // This is not a Chapter, just add the word to the
             // text block accumulator
@@ -174,10 +185,13 @@ var WordsView = Backbone.View.extend({
         // If we cut out in the middle of a subtitle
         // or text block, push the rest onto the end
         if (inSubtitle) {
-
+            subtitle = ['subtitle', this.formatText(subtitleBlock)];
+            contentList.push(subtitle);
         } else {
-            text = ['text', this.formatText(textBlock)];
-            contentList.push(text);
+            if (textBlock.length > 0) {
+                text = ['text', this.formatText(textBlock)];
+                contentList.push(text);
+            }
         }
 
 
