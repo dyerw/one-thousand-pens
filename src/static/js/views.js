@@ -1,8 +1,8 @@
+/*
+ * A view to show the user what the current votes
+ * for each word are.
+ */
 var PollView = Backbone.View.extend({
-    /*
-     * A view to show the user what the current votes
-     * for each word are.
-     */
 
     el: '#poll-content',
 
@@ -41,12 +41,11 @@ var PollView = Backbone.View.extend({
 
 });
 
-
+/*
+ * A view to show the user what the previously
+ * chosen words are.
+ */
 var WordsView = Backbone.View.extend({
-    /*
-     * A view to show the user what the previously
-     * chosen words are.
-     */
 
     el: '#story-content',
 
@@ -60,7 +59,11 @@ var WordsView = Backbone.View.extend({
         this.listenTo(this.model, "change", this.render);
     },
 
-    format_text: function(text) {
+    /*
+     * Takes the list of words and properly spaces and concatenates
+     * them, pushing punctuation onto the end of the last word
+     */
+    formatText: function(text) {
         /*
          * Takes the list of words and properly spaces and concatenates
          * them, pushing punctuation onto the end of the last word
@@ -83,9 +86,9 @@ var WordsView = Backbone.View.extend({
         return formatted_text;
     },
 
-    chapterize_text: function(text) {
-        var chapters = {};
-        var last_chapter_title = "";
+    getContentList: function() {
+        var contentList = [];
+        return contentList;
     },
 
     render: function() {
