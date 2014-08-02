@@ -13,12 +13,6 @@ var Events = {
             return
         }
 
-        // Make sure it's just one word
-        if (wordVote.split(" ").length != 1) {
-           // TODO: alert the user somehow 
-           return
-        }
-
         poll.set('has_voted', true);
         socket.emit('vote', {word: wordVote});
     },
