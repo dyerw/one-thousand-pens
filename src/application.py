@@ -81,4 +81,4 @@ def log_disconnect():
     db.session.commit()
 
 if __name__ == '__main__':
-    socket.run(app, host='0.0.0.0', port=5000)
+    socket.run(app, host='0.0.0.0', port=80)
