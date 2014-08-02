@@ -49,7 +49,30 @@ var WordsView = Backbone.View.extend({
 
     el: '#story-content',
 
-    tpl: _.template(""),
+    tpl: _.template("<% for (var i = 0; i < contentList.length; i++) { " +
+                    "content = contentList[i];" +
+
+                    // Template for text block
+                    "if (content[0] == 'text') { %>" +
+                    "<div class='text-div'><%-content[1]%></div>" +
+                    "<% } %>" +
+
+                    // Template for title block
+
+                    "<% if (content[0] == 'title') { %>" +
+                    "<div class='title-div'>" +
+                    "<img src='/static/assets/leftflourish.png'>" +
+                    "<%-  content[1]  %>" +
+                    "<img src='/static/assets/rightflourish.png'>" +
+                    "</div>" +
+                    "<% } %>" +
+
+                    // Template for the subtitle block
+                    "<% if (content[0] == 'subtitle') { %>" +
+                    "<div class='subtitle-div'><%-content[1]%></div>" +
+                    "<% } %>" +
+
+                    "<% } %>"),
 
     initialize: function() {
         // Render immediately even if there's no data
@@ -156,7 +179,7 @@ var WordsView = Backbone.View.extend({
                     // Add the accumulated text block to the list and add the chapter
                     // title
 
-                    title = ['title', word + " " + words[i + 1] + ":"];
+                    title = ['title', word + " " + words[i + 1]];
                     contentList.push(title);
 
                     inSubtitle = true;
@@ -176,7 +199,6 @@ var WordsView = Backbone.View.extend({
             // This is not a Chapter, just add the word to the
             // text block accumulator
             } else {
-                console.log(word);
                 textBlock.push(word);
                 wordsSinceChapter++;
             }
@@ -199,7 +221,9 @@ var WordsView = Backbone.View.extend({
     },
 
     render: function() {
-        this.$el.html(this.tpl({'content': this.getContentList()}));
+        console.log("rendering!");
+        console.log(this.getContentList());
+        this.$el.html(this.tpl({'contentList': this.getContentList()}));
     }
 
 });

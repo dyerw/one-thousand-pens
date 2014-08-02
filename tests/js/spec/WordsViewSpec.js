@@ -18,7 +18,7 @@ describe("WordsView", function() {
     "Chapter"];
 
     beforeEach(function() {
-        $('body').append('<div id="#story-content"></div>');
+        $('body').append('<div id="#story-content">wow</div>');
         this.wordsView = new WordsView({'model': new Words()});
     });
 

@@ -31,9 +31,28 @@ body {
     font-family: 'EB Garamond', sans-serif;
     padding: 0 20px;
     font-size: 30px;
-    margin: 0;
+    margin: 0 40px;
     overflow: auto;
-    height: 85%
+    height: 85%;
+}
+
+.text-div {
+
+}
+
+.title-div {
+    margin-top: 30px;
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+    font-size: 40px;
+}
+
+.subtitle-div {
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 10px;
 }
 
 #poll-content {
